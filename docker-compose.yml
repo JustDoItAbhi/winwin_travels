@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: winwin-postgres
+    environment:
+      POSTGRES_DB: winwin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bunty
+      TZ: UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init/sql:/docker-entrypoint-initdb.d/
+    networks:
+      - winwin-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-api:
+    build:
+      context: ./auth-api
+      dockerfile: Dockerfile
+    container_name: winwin-auth-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/winwin?serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: bunty
+      JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      INTERNAL_TOKEN: winwin-internal-secret-token-2026
+      TZ: UTC
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: UTC
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - winwin-network
+
+  data-api:
+    build:
+      context: ./data-api
+      dockerfile: Dockerfile
+    container_name: winwin-data-api
+    environment:
+      INTERNAL_TOKEN: winwin-internal-secret-token-2026
+      TZ: UTC
+    ports:
+      - "8081:8081"
+    networks:
+      - winwin-network
+
+networks:
+  winwin-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
