@@ -52,8 +52,8 @@ ________________________________________
 POST /api/auth/register
 Request Body:
 {
-  "email": "user@example.com",
-  "password": "password123"
+  "email": "abhi@mail.com",
+  "password": "123456"
 }
 Response:
 •	201 Created
@@ -62,8 +62,8 @@ ________________________________________
 POST /api/auth/login
 Request Body:
 {
-  "email": "user@example.com",
-  "password": "password123"
+  "email": "abhi@mail.com",
+  "password": "123456"
 }
 Response:
 "JWT_TOKEN"
