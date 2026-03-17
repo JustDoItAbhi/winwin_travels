@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/process")
-@RequiredArgsConstructor
 public class ProcessController {
 
     private final ProcessingLogService processService;
+
+    public ProcessController(ProcessingLogService processService) {
+        this.processService = processService;
+    }
 
     @PostMapping
     public ResponseEntity<ProcessingLogResponseDto> process(

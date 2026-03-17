@@ -12,5 +12,5 @@ public interface JwtService {
     boolean isTokenValid(String token, UserDetails userDetails);
     String decodeUserName(String token);
     <T> T decodeClaim(String token, Function<Claims,T>claimsTFunction);
-
 }
+
