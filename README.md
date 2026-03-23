@@ -136,8 +136,7 @@ service
 How to Run
 # Clone repo
 git clone <https://github.com/JustDoItAbhi/winwin_travels>
-# Navigate
-cd project-folder
+
 # Run
 mvn spring-boot:run________________________________________
 Key Concepts Used
